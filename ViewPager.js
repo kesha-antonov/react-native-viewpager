@@ -8,7 +8,6 @@ var {
   Dimensions,
   View,
   ViewPropTypes,
-  TouchableOpacity,
   PanResponder,
   Animated,
   StyleSheet,
@@ -17,7 +16,7 @@ var {
 var StaticRenderer = require('react-native/Libraries/Components/StaticRenderer');
 
 var DefaultViewPageIndicator = require('./DefaultViewPageIndicator');
-var deviceWidth = Dimensions.get('window').width;
+var deviceWidth = null;
 var ViewPagerDataSource = require('./ViewPagerDataSource');
 
 class ViewPager extends React.Component {
@@ -57,6 +56,9 @@ class ViewPager extends React.Component {
 
   constructor(props) {
     super(props)
+
+    deviceWidth = Dimensions.get('window').width;
+
     this.state = {
       currentPage: 0,
       viewWidth: 0,
@@ -166,6 +168,7 @@ class ViewPager extends React.Component {
 
   bindFunctions() {
     this.onLayout = this.onLayout.bind(this)
+    this.goToPage = this.goToPage.bind(this)
   }
 
   _startAutoPlay() {
@@ -178,7 +181,6 @@ class ViewPager extends React.Component {
   }
 
   goToPage(pageNumber, animate = true) {
-
     var pageCount = this.props.dataSource.getPageCount();
     if (pageNumber < 0 || pageNumber >= pageCount) {
       console.error('Invalid page number: ', pageNumber);
